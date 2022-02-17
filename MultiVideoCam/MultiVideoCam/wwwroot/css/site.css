@@ -1,0 +1,52 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+.navbar {
+    background-image: linear-gradient(135deg, #46bba2, #833fba);
+}
+
+a.nav-link {
+    padding: 10px 15px;
+    border-radius: 6px;
+    background-color: rgba(0,0,0,.7);
+    opacity: .7;
+    color: #fff !important;
+    margin: 5px;
+}
+
+.add-cam-content button {
+    color: #fff;
+    background-color: #46bba2;
+    border-color: #46bba2;
+    border-radius: 6px;
+    padding: 10px 15px;
+}
+
+.delete-cam button {
+    color: #fff;
+    background-color: #E81123;
+    border-color: #E81123;
+    border-radius: 6px;
+    padding: 10px 15px;
+}
+
+.add-cam-content input {
+    height: 100%;
+    border-radius: 6px;
+}

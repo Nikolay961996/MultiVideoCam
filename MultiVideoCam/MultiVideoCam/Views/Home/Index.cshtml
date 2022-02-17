@@ -1,0 +1,84 @@
+﻿@using MultiVideoCam.Controllers
+@model HomeViewModel
+
+@{
+    ViewData["Title"] = "Multi Video Cam";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Active cameras @Model.Cameras.Count</h1>
+    <p>You can add or delete cameras.</p>
+</div>
+
+<div class="gallery mb-5">
+    <div class="row">
+        @foreach (var cam in Model.Cameras)
+        {
+            <div class="col-4 mb-2">
+                <video id='@($"cam_{cam.Id}")' class='video-js vjs-fluid vjs-default-skin' controls preload='auto' data-setup='{}' autoplay>
+                    <source src='@cam.Link' type='application/x-mpegURL'>
+                </video>
+                <div class="delete-cam">
+                    <button class="ms-2 mt-1" cam_id="@cam.Id">Delete</button>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<div class="add-cam-content">
+    <div class="row">
+        <div class="col-9">
+            <input class="cam-link ratio" type="text" placeholder="Paste *.m3u8" oninput=""/>
+        </div>
+        <div class="col-3">
+            <button class="add-new-cam-btn">Add</button>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="@Url.Content("~/js/Index.js")"></script>
+<script>
+    let addUrl = '@(Url.Action<HomeController>(nameof(HomeController.AddNewCam)))';
+    let delUrl = '@(Url.Action<HomeController>(nameof(HomeController.DeleteCamera)))';
+    let addButtonSelector = '.add-cam-content .add-new-cam-btn';
+    let newCamLinkSelector = '.add-cam-content .cam-link';
+    let deleteCamSelector = '.gallery .delete-cam button';
+
+    $(document).ready(() => {
+        $('.gallery .video-js').each((index, element) => {
+            let player = videojs(element.id);
+            if (player.isReady_)
+                player.play();
+        });
+        $(addButtonSelector).on('click', addNewCam);
+        $(deleteCamSelector).on('click', deleteCam);
+    });
+
+    function addNewCam() {
+        let data = {
+            link: $(newCamLinkSelector).val()
+        };
+        $.post(addUrl, data,
+            function() {
+                document.location.reload();
+            }
+        );
+    }
+
+    function deleteCam() {
+        let data = {
+            Id: this.getAttribute('cam_id')
+        };
+        $.ajax({
+            url: delUrl,
+            type: 'DELETE',
+            data: data,
+            success: function() {
+                document.location.reload();
+            }
+        });
+
+    }
+
+</script>
